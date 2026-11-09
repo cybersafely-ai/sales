@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Affiliate Tracking Mockup</title>
+<!--
+  date: 2026-11-09 · type: draft · outcome: "04" · status: draft
+  INTERNAL decision mockup. All numbers are SAMPLE/illustrative.
+  Counts only — no parent, child or customer PII. Reward amounts are UNAPPROVED.
+-->
+<style>
+  :root{
+    --ink:#121823; --muted:#5d6670; --faint:#8a929c;
+    --accent:#2457d6; --accent-soft:#eaf0fe;
+    --line:#e3e7ee; --soft:#f5f7fb; --card:#ffffff; --bg:#eef1f6;
+    --good:#1f7a4d; --good-bg:#e7f5ed;
+    --hold:#a15c00; --hold-bg:#fff6e8;
+    --cold:#6b7280; --cold-bg:#eef0f3;
+    --pink:#b5296b;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif; font-size:14px; line-height:1.45; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:22px 20px 60px; }
+  header{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:6px; }
+  .kicker{ font-weight:700; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--accent); margin:0 0 3px; }
+  h1{ font-size:24px; margin:0; letter-spacing:-.01em; }
+  .sub{ color:var(--muted); margin:3px 0 0; font-size:13.5px; }
+  .chip{ display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--hold-bg); color:var(--hold); border:1px solid #f0dcb8; }
+  .banner{ background:var(--hold-bg); border:1px solid #f0dcb8; color:#7a4a08; border-radius:9px; padding:9px 13px; font-size:12.5px; margin:14px 0 18px; }
+  .banner b{ color:#5f3a06; }
+  .kpis{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:8px; }
+  .kpi{ background:var(--card); border:1px solid var(--line); border-radius:11px; padding:13px 14px; }
+  .kpi .label{ font-size:11px; color:var(--faint); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .kpi .val{ font-size:25px; font-weight:700; margin:5px 0 1px; letter-spacing:-.02em; }
+  .kpi .delta{ font-size:11.5px; color:var(--muted); }
+  .kpi .delta.up{ color:var(--good); }
+  .grid{ display:grid; grid-template-columns:1fr 330px; gap:16px; align-items:start; margin-top:16px; }
+  @media (max-width:880px){ .grid{ grid-template-columns:1fr; } .kpis{ grid-template-columns:repeat(2,1fr); } }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card-h{ padding:13px 16px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; }
+  .card-h h2{ font-size:14.5px; margin:0; }
+  .card-h .hint{ font-size:11.5px; color:var(--faint); }
+  .card-b{ padding:4px 16px 14px; }
+  table{ width:100%; border-collapse:collapse; font-size:12.8px; }
+  thead th{ text-align:right; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--faint);
+    font-weight:700; padding:10px 8px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  thead th:first-child{ text-align:left; }
+  tbody td{ padding:10px 8px; border-bottom:1px solid var(--soft); text-align:right; vertical-align:middle; white-space:nowrap; }
+  tbody td:first-child{ text-align:left; }
+  tbody tr:hover{ background:#fafbfe; }
+  .aff{ display:flex; align-items:center; gap:9px; }
+  .ava{ width:26px; height:26px; border-radius:7px; background:var(--accent-soft); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; flex-shrink:0; }
+  .aff .meta{ line-height:1.2; }
+  .aff .meta b{ font-size:12.8px; }
+  .aff .meta span{ display:block; font-size:10.5px; color:var(--faint); font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .mono{ font-variant-numeric:tabular-nums; }
+  .rev{ font-weight:700; }
+  .pay{ font-weight:700; color:var(--accent); }
+  .st{ display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; }
+  .st.live{ background:var(--good-bg); color:var(--good); }
+  .st.hold{ background:var(--hold-bg); color:var(--hold); }
+  .st.cold{ background:var(--cold-bg); color:var(--cold); }
+  tfoot td{ padding:11px 8px; border-top:2px solid var(--line); font-weight:700; text-align:right; font-size:13px; }
+  tfoot td:first-child{ text-align:left; }
+  .side .card{ margin-bottom:16px; }
+  .reward{ font-size:12.8px; }
+  .reward .row{ display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--soft); }
+  .reward .row:last-child{ border-bottom:0; }
+  .reward .row b{ color:var(--accent); }
+  .reward .k{ color:var(--muted); }
+  .formula{ background:var(--soft); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--muted); margin-top:10px; }
+  .formula code{ color:var(--ink); font-weight:600; background:#fff; padding:1px 5px; border-radius:4px; border:1px solid var(--line); }
+  .rule{ display:flex; gap:9px; align-items:flex-start; font-size:12.3px; padding:7px 0; border-bottom:1px solid var(--soft); }
+  .rule:last-child{ border-bottom:0; }
+  .rule .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); margin-top:5px; flex-shrink:0; }
+  .queue .q{ display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--soft); font-size:12.6px; }
+  .queue .q:last-child{ border-bottom:0; }
+  .queue .q .l{ display:flex; align-items:center; gap:8px; }
+  .queue .amt{ font-weight:700; }
+  .btn{ font-size:11px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:6px; padding:3px 9px; }
+  .btn.go{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .pipe{ display:flex; gap:0; margin:2px 0 6px; }
+  .pipe .s{ flex:1; text-align:center; padding:11px 6px; background:var(--soft); border:1px solid var(--line); border-right:0; }
+  .pipe .s:first-child{ border-radius:9px 0 0 9px; }
+  .pipe .s:last-child{ border-right:1px solid var(--line); border-radius:0 9px 9px 0; }
+  .pipe .s .n{ font-size:21px; font-weight:700; letter-spacing:-.02em; }
+  .pipe .s .t{ font-size:10.5px; color:var(--faint); text-transform:uppercase; letter-spacing:.03em; font-weight:600; }
+  .pipe .s .r{ font-size:10.5px; color:var(--good); font-weight:700; margin-top:1px; }
+  footer{ margin-top:26px; font-size:11.5px; color:var(--faint); border-top:1px solid var(--line); padding-top:12px; }
+  .legend{ display:flex; flex-wrap:wrap; gap:14px; font-size:11.5px; color:var(--muted); margin-top:4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <p class="kicker">CyberSafely.ai · Sales · Affiliates</p>
+    <h1>Affiliate Payout &amp; Revenue Tracking</h1>
+    <p class="sub">The internal view that decides who gets paid and whether we scale the pilot</p>
+  </div>
+  <span class="chip">MOCKUP · sample data · for discussion</span>
+</header>
+
+<div class="banner">
+  <b>What this screen is:</b> the "decision layer" that sits on top of the affiliate platform (Rewardful/FirstPromoter) + Stripe + HubSpot.
+  The platform handles links, tracking and payouts; <b>this</b> is where we see revenue per affiliate and approve payouts — counts only, no family data.
+  All figures below are <b>illustrative</b> and every reward amount is <b>unapproved</b>.
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">Active affiliates</div><div class="val">11</div><div class="delta">of 14 recruited</div></div>
+  <div class="kpi"><div class="label">Activated families</div><div class="val">63</div><div class="delta up">▲ 18 this month</div></div>
+  <div class="kpi"><div class="label">Revenue attributed <span style="font-weight:400">(ARR)</span></div><div class="val">$5,040</div><div class="delta">$80 avg / family</div></div>
+  <div class="kpi"><div class="label">Payout owed <span style="font-weight:400">(this run)</span></div><div class="val">$1,260</div><div class="delta">+ $340 on hold</div></div>
+  <div class="kpi"><div class="label">Cost per activated family</div><div class="val">$25</div><div class="delta">reward + platform</div></div>
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <div class="card-h"><h2>Attribution funnel — all affiliates</h2><span class="hint">last 30 days · from platform + Stripe webhooks</span></div>
+  <div class="card-b">
+    <div class="pipe">
+      <div class="s"><div class="n">9,420</div><div class="t">Link clicks</div></div>
+      <div class="s"><div class="n">412</div><div class="t">Sign-ups</div><div class="r">4.4%</div></div>
+      <div class="s"><div class="n">188</div><div class="t">Paid</div><div class="r">46%</div></div>
+      <div class="s"><div class="n">63</div><div class="t">Activated</div><div class="r">34%</div></div>
+      <div class="s"><div class="n">—</div><div class="t">Retained 90d</div><div class="r" style="color:var(--hold)">Mar ’27</div></div>
+    </div>
+    <p class="hint" style="margin:8px 2px 2px; color:var(--faint);">"Activated" = child added and keyboard enabled — this is when a reward becomes payable. 90-day retention is <b>not yet measurable</b> until the first cohort ages (≈ March 2027).</p>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-h">
+      <h2>Per-affiliate performance &amp; payout</h2>
+      <span class="hint">sorted by revenue · counts only</span>
+    </div>
+    <div class="card-b">
+      <table>
+        <thead>
+          <tr>
+            <th>Affiliate / code</th>
+            <th>Clicks</th>
+            <th>Sign-ups</th>
+            <th>Activated</th>
+            <th>Revenue (ARR)</th>
+            <th>Payout due</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="aff"><div class="ava">SP</div><div class="meta"><b>Safe Parent Co.</b><span>SAFEPARENT</span></div></div></td>
+            <td class="mono">2,140</td><td class="mono">104</td><td class="mono">17</td>
+            <td class="mono rev">$1,360</td><td class="mono pay">$340</td>
+            <td><span class="st live">Live</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">DW</div><div class="meta"><b>Digital Wellbeing Mom</b><span>DWMOM</span></div></div></td>
+            <td class="mono">1,780</td><td class="mono">88</td><td class="mono">14</td>
+            <td class="mono rev">$1,120</td><td class="mono pay">$280</td>
+            <td><span class="st live">Live</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">CT</div><div class="meta"><b>Counselor T.</b><span>COUNSELT</span></div></div></td>
+            <td class="mono">1,210</td><td class="mono">61</td><td class="mono">11</td>
+            <td class="mono rev">$880</td><td class="mono pay">$220</td>
+            <td><span class="st live">Live</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">PT</div><div class="meta"><b>PTA Voices</b><span>PTAVOICE</span></div></div></td>
+            <td class="mono">980</td><td class="mono">44</td><td class="mono">8</td>
+            <td class="mono rev">$640</td><td class="mono pay">$160</td>
+            <td><span class="st live">Live</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">OS</div><div class="meta"><b>OnlineSafe Educator</b><span>ONLINESAFE</span></div></div></td>
+            <td class="mono">860</td><td class="mono">39</td><td class="mono">7</td>
+            <td class="mono rev">$560</td><td class="mono pay">$140</td>
+            <td><span class="st live">Live</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">AM</div><div class="meta"><b>Ambassador — Maria R.</b><span>FAMMARIA</span></div></div></td>
+            <td class="mono">610</td><td class="mono">22</td><td class="mono">4</td>
+            <td class="mono rev">$320</td><td class="mono pay" style="color:var(--hold)">$80 (hold)</td>
+            <td><span class="st hold">On hold</span></td>
+          </tr>
+          <tr>
+            <td><div class="aff"><div class="ava">NC</div><div class="meta"><b>New creator — pending 1st post</b><span>SCREENTIME</span></div></div></td>
+            <td class="mono">—</td><td class="mono">—</td><td class="mono">—</td>
+            <td class="mono rev" style="color:var(--faint)">$0</td><td class="mono" style="color:var(--faint)">—</td>
+            <td><span class="st cold">Onboarding</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>6 live + 5 more</td>
+            <td class="mono">9,420</td><td class="mono">412</td><td class="mono">63</td>
+            <td class="mono">$5,040</td><td class="mono" style="color:var(--accent)">$1,260</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="legend">
+        <span><b>Revenue (ARR)</b> = activated families × their annual subscription, from Stripe.</span>
+        <span><b>Payout due</b> = reward model applied, after the 30-day hold.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="card">
+      <div class="card-h"><h2>Reward model</h2><span class="hint">unapproved</span></div>
+      <div class="card-b reward">
+        <div class="row"><span class="k">Model (pilot)</span><b>A — flat per family</b></div>
+        <div class="row"><span class="k">Reward / activated family</span><b>$20</b></div>
+        <div class="row"><span class="k">Creator's own family</span><b>Free (from C)</b></div>
+        <div class="row"><span class="k">Hold window</span><span>30 days (refund)</span></div>
+        <div class="row"><span class="k">Payout cadence</span><span>Monthly</span></div>
+        <div class="row"><span class="k">Clawback on refund</span><span>Yes</span></div>
+        <div class="formula">
+          <code>payout = activated × $20</code><br>
+          paid only after the 30-day hold clears. Top performers get offered <b>Model B</b> (recurring % revenue share) after 60 days.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><h2>December payout run</h2><span class="hint">Giancarlo drafts · Torino approves</span></div>
+      <div class="card-b queue">
+        <div class="q"><div class="l"><span class="st live">●</span> Safe Parent Co.</div><div class="l"><span class="amt">$340</span><span class="btn go">Approve</span></div></div>
+        <div class="q"><div class="l"><span class="st live">●</span> Digital Wellbeing Mom</div><div class="l"><span class="amt">$280</span><span class="btn go">Approve</span></div></div>
+        <div class="q"><div class="l"><span class="st live">●</span> Counselor T.</div><div class="l"><span class="amt">$220</span><span class="btn go">Approve</span></div></div>
+        <div class="q"><div class="l"><span class="st hold">●</span> Maria R. <span class="hint">· in hold</span></div><div class="l"><span class="amt" style="color:var(--hold)">$80</span><span class="btn">Wait</span></div></div>
+        <div class="q" style="border-top:2px solid var(--line); padding-top:11px;"><div class="l"><b>Ready to pay</b></div><div class="amt" style="color:var(--accent); font-size:15px;">$1,260</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><h2>Payout guardrails</h2></div>
+      <div class="card-b">
+        <div class="rule"><span class="dot"></span><span>Pay on <b>activation</b>, never sign-up.</span></div>
+        <div class="rule"><span class="dot"></span><span>No self-referrals; no brand-name ad bidding; no coupon sites.</span></div>
+        <div class="rule"><span class="dot"></span><span>Platform collects W-9, issues 1099 above IRS threshold.</span></div>
+        <div class="rule"><span class="dot"></span><span>Affiliates see their <b>own counts</b> only — never a family's data.</span></div>
+        <div class="rule"><span class="dot"></span><span>CyberSafely.ai pays. The Foundation is a separate entity — not involved.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <b>Internal mockup — not a product claim.</b> Illustrative sample data; no parent/child/customer PII (counts only).
+  Reward amounts shown are for leadership to set and are unapproved. Source system for live version: affiliate platform + Stripe + HubSpot, surfaced in the decision layer.
+  Prepared by Giancarlo Zaccardelli · Nov 9, 2026 · companion to the Oct 27 Parent Affiliate Program proposal.
+</footer>
+
+</div>
+</body>
+</html>

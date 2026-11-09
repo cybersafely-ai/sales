@@ -1,0 +1,10 @@
+# Supabase project config for CyberSafely Sales.
+# Deploy: `supabase link --project-ref <ref>` then `supabase db push`.
+# project_id is set to the local folder name until a company-owned project exists.
+project_id = "cybersafely-sales"
+
+[db]
+major_version = 17
+
+[db.migrations]
+schema_paths = []
